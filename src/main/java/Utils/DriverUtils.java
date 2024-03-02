@@ -2,7 +2,7 @@ package Utils;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class DriverUtils {
 
@@ -14,11 +14,17 @@ public class DriverUtils {
         if (browserType.equalsIgnoreCase("chrome")) {
             driver = new ChromeDriver();
         } else {
-            driver = new EdgeDriver();
+            driver = new FirefoxDriver();
         }
 
         driver.manage().window().maximize();
         return driver;
+
+    }
+
+    public static void tearDown(WebDriver driver){
+
+        driver.quit();
 
     }
 
