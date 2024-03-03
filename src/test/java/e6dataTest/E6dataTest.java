@@ -102,12 +102,30 @@ public class E6dataTest {
         // Fetch cluster options
         ClusterPage clusterPage = new ClusterPage(createAndDeleteClusterDriver);
         clusterPage.createNewCluster(Name,Catalog,AutoSuspensionTime);
-
+        clusterPage.deleteCluster(Name);
 
         // Closing browser driver
         DriverUtils.tearDown(createAndDeleteClusterDriver);
 
     }
+
+    @Test
+    public void queryHistoryTest() {
+
+        // Login to e6Data
+        WebDriver queryHistoryDriver = DriverUtils.initDriver("chrome");
+        LoginPage loginPage = new LoginPage(queryHistoryDriver);
+        loginPage.login();
+
+        // Fetch query history
+        QueryHistoryPage queryHistoryPage = new QueryHistoryPage(queryHistoryDriver);
+        queryHistoryPage.queryHistory();
+
+        // Closing browser driver
+        DriverUtils.tearDown(queryHistoryDriver);
+
+    }
+
 
 }
 

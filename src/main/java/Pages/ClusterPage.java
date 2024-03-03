@@ -3,6 +3,7 @@ package Pages;
 import Utils.Base;
 import Utils.ExcelUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -10,10 +11,13 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 public class ClusterPage extends Base {
 
@@ -52,7 +56,7 @@ public class ClusterPage extends Base {
     @FindBy(xpath = "//input[@placeholder='Enter cluster name']")
     WebElement txtClusterName;
 
-    @FindBy(xpath = "//input[@id='multi-select']")
+    @FindBy(xpath = "//input[@id='multi-select']/parent::div")
     WebElement ddCatalog;
 
     @FindBy(xpath = "//input[@id='cacheEnabled']")
@@ -148,6 +152,8 @@ public class ClusterPage extends Base {
         new Actions(driver).pause(Duration.ofSeconds(3)).perform();
         driver.findElement(By.xpath("//div[text()='" + catalog + "']")).click();
 
+        new Actions(driver).click(ddCatalog).sendKeys(Keys.TAB).pause(Duration.ofSeconds(1)).perform();
+
         waitToClick(driver, 10, sldResultCache);
         sldResultCache.click();
         hdrAdvancedSettings.click();
@@ -157,6 +163,46 @@ public class ClusterPage extends Base {
         txtSuspensionTime.clear();
         txtSuspensionTime.sendKeys(suspensionTime);
         btnCreateNewCluster.click();
+
+    }
+
+    public void deleteCluster(String name) {
+
+        waitToClick(driver, 10, btnSettings);
+        btnSettings.click();
+
+        waitToClick(driver, 10, rb100);
+        rb100.click();
+        btnClose.click();
+
+        double noOfPages = Math.ceil(Integer.parseInt(lblTotalRecords.getText()) / 100.00);
+
+        new Actions(driver).pause(Duration.ofSeconds(5)).perform();
+
+        // Iterate rows to get text
+        int nameRow = 0;
+
+        while (noOfPages >= 1) {
+
+            for (int i = 1; i <= tblNames.size(); i++) {
+                if (tblNames.get(i).getText().equalsIgnoreCase(name)) {
+                    nameRow = i;
+                }
+            }
+
+            if (noOfPages > 1) {
+                btnNextPage.click();
+            }
+
+            noOfPages--;
+        }
+
+        if (nameRow != 0 ) {
+            do {
+                new Actions(driver).pause(Duration.ofSeconds(5)).perform();
+                btnRefreshList.click();
+            } while (driver.findElement(By.xpath("//table[@class='p-datatable-table p-datatable-resizable-table']/tbody/tr[" + nameRow + "]/td[6]/span")).getText().equalsIgnoreCase("Active"));
+        }
 
     }
 
