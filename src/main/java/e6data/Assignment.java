@@ -37,7 +37,7 @@ public class Assignment {
     @Test(priority = 2)
     public void OptionList() throws IOException {
         List<String> optionNames = POM.LeftPanelOptionsList();
-        String filePath = "src/test/java/e6data/e6data_Assignment_Result.xlsx";
+        String filePath = "src/test/java/e6data/e6dataInput.xlsx";
         writeToExcel(optionNames,filePath);
     }
 
@@ -48,7 +48,7 @@ public class Assignment {
         }
 
     public void writeToExcel(List<String> OptionName,String filePath) throws IOException {
-           // String filePath = "src/test/java/e6data/e6data_Assignment_Result.xlsx";
+           // String filePath = "src/test/java/e6data/e6dataInput.xlsx";
             XSSFWorkbook workbook = new XSSFWorkbook();
             FileOutputStream outputFile = new FileOutputStream(filePath);
             XSSFSheet sheet = workbook.createSheet();
