@@ -103,6 +103,7 @@ public class E6dataTest {
         ClusterPage clusterPage = new ClusterPage(createAndDeleteClusterDriver);
         clusterPage.createNewCluster(Name,Catalog,AutoSuspensionTime);
 
+
         // Closing browser driver
         DriverUtils.tearDown(createAndDeleteClusterDriver);
 
