@@ -1,9 +1,10 @@
 package e6dataTest;
 
 import Pages.CatalogPage;
+import Pages.ClusterPage;
+import Pages.LoginPage;
 import Pages.PltInfraPage;
 import Utils.DriverUtils;
-import Pages.LoginPage;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeSuite;
@@ -69,6 +70,23 @@ public class E6dataTest {
 
         // Closing browser driver
         DriverUtils.tearDown(catalogOptionDriver);
+
+    }
+
+    @Test
+    public void clusterOptionTest() {
+
+        // Login to e6Data
+        WebDriver clusterOptionDriver = DriverUtils.initDriver("chrome");
+        LoginPage loginPage = new LoginPage(clusterOptionDriver);
+        loginPage.login();
+
+        // Fetch cluster options
+        ClusterPage clusterPage = new ClusterPage(clusterOptionDriver);
+        clusterPage.clusterOptions();
+
+        // Closing browser driver
+        DriverUtils.tearDown(clusterOptionDriver);
 
     }
 
