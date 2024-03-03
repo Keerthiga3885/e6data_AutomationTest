@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="E6data Test Suite">
+<suite name="E6data Test Suite" parallel="methods">
     <test verbose="1"  name="E6data Automation Test">
         <classes>
             <class name="e6dataTest.E6dataTest"/>

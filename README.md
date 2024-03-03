@@ -47,9 +47,9 @@ Add the following dependencies to your `pom.xml` file:
 - `leftNavigationTest` - List available options in the left navigation.
 - `catalogOptionTest && clusterOptionTest` - List Name, created by, status and total count of the records in
   each option.
-- `createAndDeleteClusterTest` - Create and delete the cluster.
-- `queryHistoryTest` - Get records for the last 7 days by
-  applying filters.
+- `createClusterTest` - Creates the cluster with given information.
+- `deleteClusterTest` - Delete the cluster which is created.
+- `queryHistoryTest` - Get records for the last 7 days by applying filters.
 
 ## Project Structure
 

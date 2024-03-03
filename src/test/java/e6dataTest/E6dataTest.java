@@ -89,24 +89,23 @@ public class E6dataTest {
     }
 
     @Test(dataProvider = "E6TestData", dataProviderClass = ExcelUtils.class)
-    public void createAndDeleteClusterTest(String Name, String Catalog, String AutoSuspensionTime) {
+    public void createClusterTest(String Name, String Catalog, String AutoSuspensionTime) {
 
         // Login to e6Data
-        WebDriver createAndDeleteClusterDriver = DriverUtils.initDriver("chrome");
-        LoginPage loginPage = new LoginPage(createAndDeleteClusterDriver);
+        WebDriver createClusterDriver = DriverUtils.initDriver("chrome");
+        LoginPage loginPage = new LoginPage(createClusterDriver);
         loginPage.login();
 
         // Fetch cluster options
-        ClusterPage clusterPage = new ClusterPage(createAndDeleteClusterDriver);
+        ClusterPage clusterPage = new ClusterPage(createClusterDriver);
         clusterPage.createNewCluster(Name,Catalog,AutoSuspensionTime);
-        clusterPage.deleteCluster(Name);
 
         // Closing browser driver
-        DriverUtils.tearDown(createAndDeleteClusterDriver);
+        DriverUtils.tearDown(createClusterDriver);
 
     }
 
-    @Test(dataProvider = "E6TestData", dataProviderClass = ExcelUtils.class)
+    @Test(dataProvider = "E6TestData", dataProviderClass = ExcelUtils.class,dependsOnMethods = {"createClusterTest"})
     public void deleteClusterTest(String Name, String Catalog, String AutoSuspensionTime) {
 
         // Login to e6Data
@@ -122,6 +121,7 @@ public class E6dataTest {
         DriverUtils.tearDown(deleteClusterDriver);
 
     }
+
     @Test
     public void queryHistoryTest() {
 
@@ -138,7 +138,6 @@ public class E6dataTest {
         DriverUtils.tearDown(queryHistoryDriver);
 
     }
-
 
 }
 

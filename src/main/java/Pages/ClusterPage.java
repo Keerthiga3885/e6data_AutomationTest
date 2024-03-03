@@ -71,13 +71,10 @@ public class ClusterPage extends Base {
     @FindBy(xpath = "//div[text()='Create Cluster']/following::button[text()='Create']")
     WebElement btnCreateNewCluster;
 
-    @FindBy(id = "refresh")
-    WebElement btnRefreshList;
-
     @FindBy(xpath = "//span[text()='Delete']")
     WebElement btnDelete;
 
-    @FindBy(id="formBasicPassword")
+    @FindBy(id = "formBasicPassword")
     WebElement txtDeleteAlert;
 
     @FindBy(xpath = "//button[text()='Confirm']")
@@ -170,67 +167,8 @@ public class ClusterPage extends Base {
 
     }
 
-//        public void deleteCluster(String name) {
-//
-//        // Navigate to cluster page
-//        waitToClick(driver, 10, btnCluster);
-//        btnCluster.click();
-//
-//        waitToClick(driver, 30, btnSettings);
-//        btnSettings.click();
-//
-//        waitToClick(driver, 10, rb100);
-//        rb100.click();
-//        btnClose.click();
-//
-//        double noOfPages = Math.ceil(Integer.parseInt(lblTotalRecords.getText()) / 100.00);
-//
-//        new Actions(driver).pause(Duration.ofSeconds(5)).perform();
-//
-//        // Iterate rows to get text
-//        int nameRow = 0;
-//
-//        while (noOfPages >= 1) {
-//
-//            for (int i = 1; i < tblNames.size(); i++) {
-//                if (tblNames.get(i).getText().contains(name)) {
-//                    nameRow = i;
-//                    System.out.println(nameRow);
-//                }
-//                System.out.println(tblNames.size());
-//
-//            }
-//
-//            if (noOfPages > 1) {
-//                btnNextPage.click();
-//            }
-//
-//            noOfPages--;
-//        }
-//
-//        if (nameRow != 0 ) {
-//            do {
-//                new Actions(driver).pause(Duration.ofSeconds(5)).perform();
-//                btnRefreshList.click();
-//            } while (driver.findElement(By.xpath("//table[@class='p-datatable-table p-datatable-resizable-table']/tbody/tr[" + nameRow + "]/td[6]/span")).getText().equalsIgnoreCase("Active"));
-//
-//            driver.findElement(By.xpath("(//table/tbody/tr/td//button[@id='dropdown-autoclose-true'])[" +nameRow+ "]")).click();
-//
-//            waitToClick(driver,10,btnDelete);
-//            btnDelete.click();
-//
-//            waitToClick(driver,10,txtDeleteAlert);
-//            txtDeleteAlert.sendKeys("Delete");
-//
-//            waitToClick(driver,10,btnDeleteConfirm);
-//            btnDeleteConfirm.click();
-//
-//
-//        }
-//
-//    }
-
     public void deleteCluster(String name) {
+
         // Navigate to cluster page
         waitToClick(driver, 10, btnCluster);
         btnCluster.click();
@@ -249,31 +187,46 @@ public class ClusterPage extends Base {
 
         // Iterate through pages
         for (int page = 1; page <= totalPages; page++) {
+
             // Iterate through rows on the current page
             for (WebElement row : tblNames) {
+
                 if (row.getText().contains(name)) {
+
                     // Found the row containing the name
-                    String status = row.findElement(By.xpath("./td[6]/span")).getText();
+                    String status = row.findElement(By.xpath("//td[6]/span")).getText();
+
                     if (status.equalsIgnoreCase("Active")) {
+
                         // Click on dropdown menu and delete
-                        WebElement dropdownBtn = row.findElement(By.xpath("./td//button[@id='dropdown-autoclose-true']"));
+                        WebElement dropdownBtn = row.findElement(By.xpath("//td//button[@id='dropdown-autoclose-true']"));
                         dropdownBtn.click();
+
                         waitToClick(driver, 10, btnDelete);
                         btnDelete.click();
+
                         waitToClick(driver, 10, txtDeleteAlert);
                         txtDeleteAlert.sendKeys("Delete");
+
                         waitToClick(driver, 10, btnDeleteConfirm);
                         btnDeleteConfirm.click();
+
                     }
-                    return; // Exit method after deletion
+                    return;
                 }
+
             }
+
+            // Click next page
             if (page < totalPages) {
-                // Click next page
                 btnNextPage.click();
             }
+
         }
+
     }
 
-
 }
+
+
+
