@@ -106,6 +106,22 @@ public class E6dataTest {
 
     }
 
+    @Test(dataProvider = "E6TestData", dataProviderClass = ExcelUtils.class)
+    public void deleteClusterTest(String Name, String Catalog, String AutoSuspensionTime) {
+
+        // Login to e6Data
+        WebDriver deleteClusterDriver = DriverUtils.initDriver("chrome");
+        LoginPage loginPage = new LoginPage(deleteClusterDriver);
+        loginPage.login();
+
+        // Fetch cluster options
+        ClusterPage clusterPage = new ClusterPage(deleteClusterDriver);
+        clusterPage.deleteCluster(Name);
+
+        // Closing browser driver
+        DriverUtils.tearDown(deleteClusterDriver);
+
+    }
     @Test
     public void queryHistoryTest() {
 
