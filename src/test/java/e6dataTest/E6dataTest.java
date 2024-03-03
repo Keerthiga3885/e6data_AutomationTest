@@ -1,5 +1,6 @@
 package e6dataTest;
 
+import Pages.CatalogPage;
 import Pages.PltInfraPage;
 import Utils.DriverUtils;
 import Pages.LoginPage;
@@ -27,7 +28,7 @@ public class E6dataTest {
 
     }
 
-    //@Test
+    @Test
     public void loginTest() {
 
         WebDriver loginDriver = DriverUtils.initDriver("chrome");
@@ -51,6 +52,23 @@ public class E6dataTest {
 
         // Closing browser driver
         DriverUtils.tearDown(leftNavigationDriver);
+
+    }
+
+    @Test
+    public void catalogOptionTest() {
+
+        // Login to e6Data
+        WebDriver catalogOptionDriver = DriverUtils.initDriver("chrome");
+        LoginPage loginPage = new LoginPage(catalogOptionDriver);
+        loginPage.login();
+
+        // Fetch catalog options
+        CatalogPage catalogPage = new CatalogPage(catalogOptionDriver);
+        catalogPage.catalogOptions();
+
+        // Closing browser driver
+        DriverUtils.tearDown(catalogOptionDriver);
 
     }
 

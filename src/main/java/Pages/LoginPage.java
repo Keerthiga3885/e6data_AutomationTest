@@ -23,6 +23,9 @@ public class LoginPage extends Base {
     @FindBy(xpath = "//button[text()='Sign in']")
     WebElement btnSignIn;
 
+    @FindBy(xpath="//a[text()='plt-infra']")
+    WebElement lnkPltInfra;
+
     public LoginPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -52,6 +55,9 @@ public class LoginPage extends Base {
         // Click sign in btn
         waitToClick(driver, 20, btnSignIn);
         btnSignIn.click();
+
+        waitToClick(driver,30,lnkPltInfra);
+        lnkPltInfra.click();
 
     }
 

@@ -15,38 +15,31 @@ public class PltInfraPage extends Base {
 
     WebDriver driver;
 
-    @FindBy(xpath="//a[text()='plt-infra']")
-    WebElement lnkPltInfra;
-
-    @FindBy(id="Connectivity")
+    @FindBy(id = "Connectivity")
     WebElement btnConnectivity;
 
     @FindAll(@FindBy(xpath = "//span[@class='name-label ']"))
     List<WebElement> leftNavigationMenu;
 
-    public PltInfraPage(WebDriver driver){
+    public PltInfraPage(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver,this);
+        PageFactory.initElements(driver, this);
     }
 
-    public void leftNavigationMenuList(){
+    public void leftNavigationMenuList() {
 
-        waitToClick(driver,30,lnkPltInfra);
-        lnkPltInfra.click();
-
-        waitToClick(driver,30,btnConnectivity);
+        waitToClick(driver, 30, btnConnectivity);
         btnConnectivity.click();
 
-        waitToVisibleAllElements(driver,30,leftNavigationMenu);
+        waitToVisibleAllElements(driver, 30, leftNavigationMenu);
         List<String> leftNavigationMenuList = new ArrayList<>();
 
         for (WebElement leftPanelOption : leftNavigationMenu) {
-            System.out.println(leftPanelOption.getText());
             leftNavigationMenuList.add(leftPanelOption.getText());
-
         }
 
-        ExcelUtils.excelWriter("LeftNavigationMenu","Menu List",leftNavigationMenuList);
+        // Update results to excel
+        ExcelUtils.excelWriter("LeftNavigationMenu", "Menu List", leftNavigationMenuList);
 
     }
 

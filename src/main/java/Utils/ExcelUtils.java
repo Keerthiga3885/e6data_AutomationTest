@@ -1,8 +1,6 @@
 package Utils;
 
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,34 +43,45 @@ public class ExcelUtils {
         return excelData;
     }
 
-    public static void excelWriter(String sheetName, String columnName, List<String> data) {
+    public static synchronized void excelWriter(String sheetName, String columnName, List<String> data) {
 
-        try {
+        try (InputStream inputStream = Files.newInputStream(Paths.get(outputExcelLocation));
+             Workbook workBook = WorkbookFactory.create(inputStream)) {
 
-            InputStream inputStream = Files.newInputStream(Paths.get(outputExcelLocation));
-            Workbook workBook = WorkbookFactory.create(inputStream);
             Sheet sheet = workBook.getSheet(sheetName);
 
-            for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
-                if(sheet.getRow(0).getCell(i).getStringCellValue().equalsIgnoreCase(columnName)){
-                    for (int j = 0; j < data.size(); j++) {
-                        sheet.createRow(j+1);
-                        sheet.getRow(j+1).createCell(i).setCellValue(data.get(j));
-                    }
-                }
+            int columnIndex = findColumnIndex(sheet.getRow(0), columnName);
+            if (columnIndex == -1) {
+                throw new IllegalArgumentException("Column '" + columnName + "' not found.");
             }
 
-            FileOutputStream fileOutputStream = new FileOutputStream(outputExcelLocation);
-            workBook.write(fileOutputStream);
+            for (int j = 0; j < data.size(); j++) {
 
-            fileOutputStream.flush();
-            workBook.close();
-            inputStream.close();
+                Row row = sheet.getRow(j + 1);
+                if (row == null) {
+                    row = sheet.createRow(j + 1);
+                }
+                Cell cell = row.createCell(columnIndex);
+                cell.setCellValue(data.get(j));
+            }
+
+            try (FileOutputStream fileOutputStream = new FileOutputStream(outputExcelLocation)) {
+                workBook.write(fileOutputStream);
+            }
 
         } catch (IOException e) {
-            throw new RuntimeException("Unable to write data to excel " + e.getMessage());
+            throw new RuntimeException("Unable to write data to excel: " + e.getMessage(), e);
         }
+    }
 
+    private static int findColumnIndex(Row headerRow, String columnName) {
+        for (int i = 0; i < headerRow.getLastCellNum(); i++) {
+            Cell cell = headerRow.getCell(i);
+            if (cell != null && cell.getStringCellValue().equalsIgnoreCase(columnName)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 }
