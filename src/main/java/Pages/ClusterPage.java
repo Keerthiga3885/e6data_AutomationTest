@@ -11,13 +11,10 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 
 public class ClusterPage extends Base {
 
@@ -79,6 +76,13 @@ public class ClusterPage extends Base {
 
     @FindBy(xpath = "//span[text()='Delete']")
     WebElement btnDelete;
+
+    @FindBy(id="formBasicPassword")
+    WebElement txtDeleteAlert;
+
+    @FindBy(xpath = "//button[text()='Confirm']")
+    WebElement btnDeleteConfirm;
+
 
     public ClusterPage(WebDriver driver) {
         this.driver = driver;
@@ -168,7 +172,7 @@ public class ClusterPage extends Base {
 
     public void deleteCluster(String name) {
 
-        waitToClick(driver, 10, btnSettings);
+        waitToClick(driver, 30, btnSettings);
         btnSettings.click();
 
         waitToClick(driver, 10, rb100);
@@ -202,6 +206,19 @@ public class ClusterPage extends Base {
                 new Actions(driver).pause(Duration.ofSeconds(5)).perform();
                 btnRefreshList.click();
             } while (driver.findElement(By.xpath("//table[@class='p-datatable-table p-datatable-resizable-table']/tbody/tr[" + nameRow + "]/td[6]/span")).getText().equalsIgnoreCase("Active"));
+
+            driver.findElement(By.xpath("(//table/tbody/tr/td//button[@id='dropdown-autoclose-true'])[" +nameRow+ "]")).click();
+
+            waitToClick(driver,10,btnDelete);
+            btnDelete.click();
+
+            waitToClick(driver,10,txtDeleteAlert);
+            txtDeleteAlert.sendKeys("Delete");
+
+            waitToClick(driver,10,btnDeleteConfirm);
+            btnDeleteConfirm.click();
+
+
         }
 
     }

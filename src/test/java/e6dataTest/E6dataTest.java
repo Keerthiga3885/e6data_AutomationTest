@@ -1,9 +1,6 @@
 package e6dataTest;
 
-import Pages.CatalogPage;
-import Pages.ClusterPage;
-import Pages.LoginPage;
-import Pages.PltInfraPage;
+import Pages.*;
 import Utils.DriverUtils;
 import Utils.ExcelUtils;
 import org.apache.commons.io.FileUtils;
