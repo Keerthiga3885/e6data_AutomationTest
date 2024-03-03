@@ -1,6 +1,7 @@
 package Utils;
 
 import org.apache.poi.ss.usermodel.*;
+import org.testng.annotations.DataProvider;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,9 +14,11 @@ public class ExcelUtils {
 
     private static final String outputExcelLocation = "test-output/e6dataTestOutput.xlsx";
 
+    @DataProvider(name = "E6TestData")
     public static Object[][] excelReader() {
 
         Object[][] excelData;
+        DataFormatter dataFormatter = new DataFormatter();
 
         try {
 
@@ -29,7 +32,7 @@ public class ExcelUtils {
 
             for (int i = 1; i <= rowCount; i++) {
                 for (int j = 0; j < colCount; j++) {
-                    excelData[i-1][j] = sheet.getRow(i).getCell(j);
+                    excelData[i-1][j] = dataFormatter.formatCellValue(sheet.getRow(i).getCell(j));
                 }
             }
 

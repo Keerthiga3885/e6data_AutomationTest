@@ -2,6 +2,7 @@ package Pages;
 
 import Utils.Base;
 import Utils.ExcelUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -44,6 +45,36 @@ public class ClusterPage extends Base {
 
     @FindAll(@FindBy(xpath = "//table[@class='p-datatable-table p-datatable-resizable-table']/tbody/tr/td[6]/span"))
     List<WebElement> tblStatus;
+
+    @FindBy(xpath = "//button[text()='Create']")
+    WebElement btnCreateCluster;
+
+    @FindBy(xpath = "//input[@placeholder='Enter cluster name']")
+    WebElement txtClusterName;
+
+    @FindBy(xpath = "//input[@id='multi-select']")
+    WebElement ddCatalog;
+
+    @FindBy(xpath = "//input[@id='cacheEnabled']")
+    WebElement sldResultCache;
+
+    @FindBy(xpath = "//span[text()='Advanced Settings']")
+    WebElement hdrAdvancedSettings;
+
+    @FindBy(xpath = "//input[@id='susTime']")
+    WebElement txtSuspensionTime;
+
+    @FindBy(xpath = "//input[@id='defaultQuery']")
+    WebElement sldQueryTimeOut;
+
+    @FindBy(xpath = "//div[text()='Create Cluster']/following::button[text()='Create']")
+    WebElement btnCreateNewCluster;
+
+    @FindBy(id = "refresh")
+    WebElement btnRefreshList;
+
+    @FindBy(xpath = "//span[text()='Delete']")
+    WebElement btnDelete;
 
     public ClusterPage(WebDriver driver) {
         this.driver = driver;
@@ -98,6 +129,34 @@ public class ClusterPage extends Base {
         ExcelUtils.excelWriter("ClusterOptions", "Created By", createdByList);
         ExcelUtils.excelWriter("ClusterOptions", "Status", statusList);
         ExcelUtils.excelWriter("ClusterOptions", "Total Records", Collections.singletonList(lblTotalRecords.getText()));
+
+    }
+
+    public void createNewCluster(String name, String catalog, String suspensionTime) {
+
+        // Navigate to cluster page
+        waitToClick(driver, 10, btnCluster);
+        btnCluster.click();
+
+        waitToClick(driver, 20, btnCreateCluster);
+        btnCreateCluster.click();
+
+        waitToClick(driver, 10, txtClusterName);
+        txtClusterName.sendKeys(name);
+        ddCatalog.click();
+
+        new Actions(driver).pause(Duration.ofSeconds(3)).perform();
+        driver.findElement(By.xpath("//div[text()='" + catalog + "']")).click();
+
+        waitToClick(driver, 10, sldResultCache);
+        sldResultCache.click();
+        hdrAdvancedSettings.click();
+
+        waitToClick(driver, 10, sldQueryTimeOut);
+        sldQueryTimeOut.click();
+        txtSuspensionTime.clear();
+        txtSuspensionTime.sendKeys(suspensionTime);
+        btnCreateNewCluster.click();
 
     }
 

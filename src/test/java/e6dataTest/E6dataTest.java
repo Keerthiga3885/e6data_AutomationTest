@@ -5,6 +5,7 @@ import Pages.ClusterPage;
 import Pages.LoginPage;
 import Pages.PltInfraPage;
 import Utils.DriverUtils;
+import Utils.ExcelUtils;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeSuite;
@@ -87,6 +88,23 @@ public class E6dataTest {
 
         // Closing browser driver
         DriverUtils.tearDown(clusterOptionDriver);
+
+    }
+
+    @Test(dataProvider = "E6TestData", dataProviderClass = ExcelUtils.class)
+    public void createAndDeleteClusterTest(String Name, String Catalog, String AutoSuspensionTime) {
+
+        // Login to e6Data
+        WebDriver createAndDeleteClusterDriver = DriverUtils.initDriver("chrome");
+        LoginPage loginPage = new LoginPage(createAndDeleteClusterDriver);
+        loginPage.login();
+
+        // Fetch cluster options
+        ClusterPage clusterPage = new ClusterPage(createAndDeleteClusterDriver);
+        clusterPage.createNewCluster(Name,Catalog,AutoSuspensionTime);
+
+        // Closing browser driver
+        DriverUtils.tearDown(createAndDeleteClusterDriver);
 
     }
 
