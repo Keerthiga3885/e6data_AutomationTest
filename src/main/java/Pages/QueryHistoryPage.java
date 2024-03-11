@@ -4,10 +4,12 @@ import Utils.Base;
 import Utils.ExcelUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,10 @@ public class QueryHistoryPage extends Base {
 
     WebDriver driver;
 
-    @FindBy(xpath = "//a[@href='/query-history?sid=s55el54cur']")
+    @FindBy(id = "Connectivity")
+    WebElement btnConnectivity;
+
+    @FindBy(xpath = "//span[@class='name-label ' and text()='Query history']")
     WebElement btnQueryHistory;
 
     @FindBy(xpath = "//input[@class='input-label w-100 form-control form-control-sm']")
@@ -38,6 +43,12 @@ public class QueryHistoryPage extends Base {
 
     @FindBy(id = "settings")
     WebElement btnSettings;
+
+    @FindBy(xpath = "//span[@id='total-records']/following::button[@aria-label='Next Page'][1]")
+    WebElement btnNextPage;
+
+    @FindBy(xpath = "//*[@id='total-records']/span")
+    WebElement lblTotalRecords;
 
     @FindBy(id = "100")
     WebElement rb100;
@@ -98,6 +109,9 @@ public class QueryHistoryPage extends Base {
         List<String> runByList = new ArrayList<>();
 
         // Navigate to query history page and filter
+        waitToClick(driver, 10, btnConnectivity);
+        btnConnectivity.click();
+
         waitToClick(driver, 10, btnQueryHistory);
         btnQueryHistory.click();
 
@@ -112,6 +126,8 @@ public class QueryHistoryPage extends Base {
         txtEntityName.sendKeys("Fail");
         btnAddFilter.click();
 
+        new Actions(driver).pause(Duration.ofSeconds(5)).perform();
+
         waitToClick(driver, 10, btnSettings);
         btnSettings.click();
 
@@ -119,51 +135,73 @@ public class QueryHistoryPage extends Base {
         rb100.click();
         btnClose.click();
 
+        double noOfPages = Math.ceil(Integer.parseInt(lblTotalRecords.getText()) / 100.00);
+
         // Fetch and store results from ui
-        for (WebElement queryId : tblQueryId) {
-            queryIdList.add(queryId.getText());
-        }
+        while (noOfPages >= 1) {
 
-        for (WebElement queryHash : tblQueryHash) {
-            queryHashList.add(queryHash.getText());
-        }
+            waitToVisibleAllElements(driver,15,tblQueryId);
+            for (WebElement queryId : tblQueryId) {
+                queryIdList.add(queryId.getText());
+            }
 
-        for (WebElement status : tblStatus) {
-            statusList.add(status.getText());
-        }
+            waitToVisibleAllElements(driver,15,tblQueryHash);
+            for (WebElement queryHash : tblQueryHash) {
+                queryHashList.add(queryHash.getText());
+            }
 
-        for (WebElement cachedResult : tblCachedResult) {
-            cachedResultList.add(cachedResult.getText());
-        }
+            waitToVisibleAllElements(driver,15,tblStatus);
+            for (WebElement status : tblStatus) {
+                statusList.add(status.getText());
+            }
 
-        for (WebElement planningTime : tblPlanningTime) {
-            planningTimeList.add(planningTime.getText());
-        }
+            waitToVisibleAllElements(driver,15,tblCachedResult);
+            for (WebElement cachedResult : tblCachedResult) {
+                cachedResultList.add(cachedResult.getText());
+            }
 
-        for (WebElement queueTime : tblQueueTime) {
-            queueTimeList.add(queueTime.getText());
-        }
+            waitToVisibleAllElements(driver,15,tblPlanningTime);
+            for (WebElement planningTime : tblPlanningTime) {
+                planningTimeList.add(planningTime.getText());
+            }
 
-        for (WebElement execution : tblExecutionTime) {
-            executionList.add(execution.getText());
-        }
+            waitToVisibleAllElements(driver,15,tblQueueTime);
+            for (WebElement queueTime : tblQueueTime) {
+                queueTimeList.add(queueTime.getText());
+            }
 
-        for (WebElement startTime : tblStartTime) {
-            startTimeList.add(startTime.getText());
-        }
+            waitToVisibleAllElements(driver,15,tblExecutionTime);
+            for (WebElement execution : tblExecutionTime) {
+                executionList.add(execution.getText());
+            }
 
-        for (WebElement endTime : tblEndTime) {
-            endTimeList.add(endTime.getText());
-        }
+            waitToVisibleAllElements(driver,15,tblStartTime);
+            for (WebElement startTime : tblStartTime) {
+                startTimeList.add(startTime.getText());
+            }
 
-        for (WebElement cluster : tblCluster) {
-            clusterList.add(cluster.getText());
-        }
+            waitToVisibleAllElements(driver,15,tblEndTime);
+            for (WebElement endTime : tblEndTime) {
+                endTimeList.add(endTime.getText());
+            }
 
-        for (WebElement runBy : tblRunBy) {
-            runByList.add(runBy.getText());
-        }
+            waitToVisibleAllElements(driver,15,tblCluster);
+            for (WebElement cluster : tblCluster) {
+                clusterList.add(cluster.getText());
+            }
 
+            waitToVisibleAllElements(driver,15,tblRunBy);
+            for (WebElement runBy : tblRunBy) {
+                runByList.add(runBy.getText());
+            }
+
+            if (noOfPages > 1) {
+                btnNextPage.click();
+            }
+
+            noOfPages--;
+
+        }
         // Update results in excel
         ExcelUtils.excelWriter("QueryHistory", "QueryID", queryIdList);
         ExcelUtils.excelWriter("QueryHistory", "QueryHash", queryHashList);

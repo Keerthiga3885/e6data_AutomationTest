@@ -18,7 +18,9 @@ public class CatalogPage extends Base {
 
     WebDriver driver;
 
-    @FindBy(xpath = "//a[@href='/catalog?sid=s55el54cur']")
+    @FindBy(id = "Connectivity")
+    WebElement btnConnectivity;
+    @FindBy(xpath = "//span[@class='name-label ' and text()='Catalogs']")
     WebElement btnCatalog;
 
     @FindBy(xpath = "//span[@id='total-records']/following::button[@aria-label='Next Page'][1]")
@@ -57,6 +59,10 @@ public class CatalogPage extends Base {
         List<String> statusList = new ArrayList<>();
 
         // Navigate to catalog page and filter
+
+        waitToClick(driver, 10, btnConnectivity);
+        btnConnectivity.click();
+
         waitToClick(driver, 10, btnCatalog);
         btnCatalog.click();
 

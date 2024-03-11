@@ -20,7 +20,10 @@ public class ClusterPage extends Base {
 
     WebDriver driver;
 
-    @FindBy(xpath = "//a[@href='/cluster?sid=s55el54cur']")
+    @FindBy(id = "Connectivity")
+    WebElement btnConnectivity;
+
+    @FindBy(xpath = "//span[@class='name-label ' and text()='Clusters']")
     WebElement btnCluster;
 
     @FindBy(xpath = "//span[@id='total-records']/following::button[@aria-label='Next Page'][1]")
@@ -93,6 +96,10 @@ public class ClusterPage extends Base {
         List<String> statusList = new ArrayList<>();
 
         // Navigate to cluster page and filter
+
+        waitToClick(driver, 10, btnConnectivity);
+        btnConnectivity.click();
+
         waitToClick(driver, 10, btnCluster);
         btnCluster.click();
 
@@ -140,6 +147,10 @@ public class ClusterPage extends Base {
     public void createNewCluster(String name, String catalog, String suspensionTime) {
 
         // Navigate to cluster page
+
+        waitToClick(driver, 10, btnConnectivity);
+        btnConnectivity.click();
+
         waitToClick(driver, 10, btnCluster);
         btnCluster.click();
 
@@ -170,6 +181,10 @@ public class ClusterPage extends Base {
     public void deleteCluster(String name) {
 
         // Navigate to cluster page
+
+        waitToClick(driver, 10, btnConnectivity);
+        btnConnectivity.click();
+
         waitToClick(driver, 10, btnCluster);
         btnCluster.click();
 
