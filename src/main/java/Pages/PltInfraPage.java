@@ -31,7 +31,7 @@ public class PltInfraPage extends Base {
         waitToClick(driver, 30, btnConnectivity);
         btnConnectivity.click();
 
-        waitToVisibleAllElements(driver, 30, leftNavigationMenu);
+        waitToVisibleAllElements(driver, 20, leftNavigationMenu);
         List<String> leftNavigationMenuList = new ArrayList<>();
 
         for (WebElement leftPanelOption : leftNavigationMenu) {
