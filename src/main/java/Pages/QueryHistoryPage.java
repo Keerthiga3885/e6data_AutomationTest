@@ -35,6 +35,9 @@ public class QueryHistoryPage extends Base {
     @FindBy(xpath = "//div[text()='Status']")
     WebElement ddStatus;
 
+    @FindBy(xpath = "//div[text()='Cluster name']")
+    WebElement ddClusterName;
+
     @FindBy(id = "formBasicPassword")
     WebElement txtEntityName;
 
@@ -121,9 +124,9 @@ public class QueryHistoryPage extends Base {
 
         waitToClick(driver, 10, btnEntityType);
         btnEntityType.click();
-        ddStatus.click();
+        ddClusterName.click();
 
-        txtEntityName.sendKeys("Fail");
+        txtEntityName.sendKeys("basic");
         btnAddFilter.click();
 
         new Actions(driver).pause(Duration.ofSeconds(5)).perform();
@@ -140,22 +143,18 @@ public class QueryHistoryPage extends Base {
         // Fetch and store results from ui
         while (noOfPages >= 1) {
 
-            waitToVisibleAllElements(driver,15,tblQueryId);
             for (WebElement queryId : tblQueryId) {
                 queryIdList.add(queryId.getText());
             }
 
-            waitToVisibleAllElements(driver,15,tblQueryHash);
             for (WebElement queryHash : tblQueryHash) {
                 queryHashList.add(queryHash.getText());
             }
 
-            waitToVisibleAllElements(driver,15,tblStatus);
             for (WebElement status : tblStatus) {
                 statusList.add(status.getText());
             }
 
-            waitToVisibleAllElements(driver,15,tblCachedResult);
             for (WebElement cachedResult : tblCachedResult) {
                 cachedResultList.add(cachedResult.getText());
             }
@@ -165,32 +164,26 @@ public class QueryHistoryPage extends Base {
                 planningTimeList.add(planningTime.getText());
             }
 
-            waitToVisibleAllElements(driver,15,tblQueueTime);
             for (WebElement queueTime : tblQueueTime) {
                 queueTimeList.add(queueTime.getText());
             }
 
-            waitToVisibleAllElements(driver,15,tblExecutionTime);
             for (WebElement execution : tblExecutionTime) {
                 executionList.add(execution.getText());
             }
 
-            waitToVisibleAllElements(driver,15,tblStartTime);
             for (WebElement startTime : tblStartTime) {
                 startTimeList.add(startTime.getText());
             }
 
-            waitToVisibleAllElements(driver,15,tblEndTime);
             for (WebElement endTime : tblEndTime) {
                 endTimeList.add(endTime.getText());
             }
 
-            waitToVisibleAllElements(driver,15,tblCluster);
             for (WebElement cluster : tblCluster) {
                 clusterList.add(cluster.getText());
             }
 
-            waitToVisibleAllElements(driver,15,tblRunBy);
             for (WebElement runBy : tblRunBy) {
                 runByList.add(runBy.getText());
             }
